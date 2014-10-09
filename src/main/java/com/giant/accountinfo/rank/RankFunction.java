@@ -2,6 +2,13 @@ package com.giant.accountinfo.rank;
 
 import com.google.common.base.Strings;
 
+/**
+ * 数据向量化函数，负责将各个字段数据进行向量化
+ * 
+ * @author wankun
+ * @date 2014年10月8日
+ * @version 1.0
+ */
 public class RankFunction {
 
 	public static double getAllRank(double xs[]) {
@@ -9,6 +16,8 @@ public class RankFunction {
 		// 动态调整字段的权值
 		if (xs[1] > 0)
 			ks[1] = 0.2;
+		if (xs[4] == 0)
+			ks[4] = 0;
 		if (xs[6] > 0.1)
 			ks[6] = 0.5;
 		return getAllRank(xs, ks);

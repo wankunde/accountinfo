@@ -53,17 +53,21 @@ location '/tmp/wankun/accountrank/';
 select count(1) from tmp2 ; -- 147542
 
 // 查看计算结果的分布
-// 14060	14069	15964	134352	134679	138938	138973	147312	147527	147542
-select sum(IF(rank > 0.9,1,0)),
-       sum(IF(rank > 0.8,1,0)),
-       sum(IF(rank > 0.7,1,0)),
-       sum(IF(rank > 0.6,1,0)),
-       sum(IF(rank > 0.5,1,0)),
-       sum(IF(rank > 0.4,1,0)),
-       sum(IF(rank > 0.3,1,0)),
-       sum(IF(rank > 0.2,1,0)),
-       sum(IF(rank > 0.1,1,0)),
-       sum(IF(rank > 0,1,0))
++-------+-----+------+--------+------+-----+------+-----+-----+-----+
+| pr9   | pr8 | pr7  | pr6    | pr5  | pr4 | pr3  | pr2 | pr1 | pr0 |
++-------+-----+------+--------+------+-----+------+-----+-----+-----+
+| 14453 | 11  | 1708 | 119202 | 2969 | 622 | 8115 | 386 | 72  | 4   |
++-------+-----+------+--------+------+-----+------+-----+-----+-----+
+select sum(IF(rank > 0.9,1,0)) as PR9,
+       sum(IF(rank > 0.8 and rank <=0.9,1,0)) as PR8,
+       sum(IF(rank > 0.7 and rank <=0.8,1,0)) as PR7,
+       sum(IF(rank > 0.6 and rank <=0.7,1,0)) as PR6,
+       sum(IF(rank > 0.5 and rank <=0.6,1,0)) as PR5,
+       sum(IF(rank > 0.4 and rank <=0.5,1,0)) as PR4,
+       sum(IF(rank > 0.3 and rank <=0.4,1,0)) as PR3,
+       sum(IF(rank > 0.2 and rank <=0.3,1,0)) as PR2,
+       sum(IF(rank > 0.1 and rank <=0.2,1,0)) as PR1,
+       sum(IF(rank > 0 and rank <=0.1,1,0)) as PR0
 from tmp2 ;
 
 // 验证数据

@@ -6,10 +6,12 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Mapper.Context;
+import org.apache.log4j.Logger;
+
+import com.giant.accountinfo.AccountGroup1;
 
 /**
- * 
- * Usage : hadoop jar accountinfo-1.0.0.jar com.giant.accountinfo.RankDict
  * 
  * @author wankun
  * @date 2014年9月25日
@@ -17,11 +19,18 @@ import org.apache.hadoop.mapreduce.Reducer;
  */
 public class RankDict {
 
+	private static Logger logger = Logger.getLogger(RankDict.class);
+
 	public static class Map extends Mapper<Object, Text, Text, IntWritable> {
 		private IntWritable one = new IntWritable(1);
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 			String[] cols = value.toString().split("	");
+
+			if (cols.length < 39) {
+				logger.error("行解析失败：" + value.toString());
+				return;
+			}
 
 			String regtime = cols[4];
 			context.write(new Text("col4+" + regtime.substring(0, 13)), one);
